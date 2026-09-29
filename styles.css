@@ -1,0 +1,37 @@
+
+:root{
+  --navy:#0b1f3a; --blue:#2f7df6; --sky:#dcecff; --white:#fff;
+  --ink:#14213d; --muted:#6f7b8d; --line:#dfe5ec; --bg:#f3f6fa;
+  --ok:#0f9d68; --warn:#f4b400;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;color:var(--ink)}
+button{font:inherit}
+#app{max-width:520px;margin:0 auto;min-height:100vh;background:var(--bg);padding-bottom:40px}
+.topbar{padding:calc(18px + env(safe-area-inset-top)) 20px 12px;background:var(--navy);color:white;display:flex;justify-content:space-between;align-items:center}
+.topbar h1{font-size:24px;margin:3px 0 0}.eyebrow{font-size:11px;letter-spacing:.14em;font-weight:700;opacity:.7}
+.level-pill,.badge{border:0;border-radius:999px;padding:8px 12px;background:var(--sky);color:var(--navy);font-weight:700}
+main{padding:16px}.view{display:none}.view.active{display:block}
+.card{background:white;border:1px solid var(--line);border-radius:20px;box-shadow:0 8px 24px rgba(11,31,58,.06)}
+.hero{padding:22px;display:flex;justify-content:space-between;align-items:center}.countdown{font-size:44px;font-weight:900;line-height:1}.countdown small{font-size:14px;letter-spacing:.08em}
+.muted{color:var(--muted);font-size:14px}.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.stat{padding:16px 8px;text-align:center}.stat b{display:block;font-size:24px}.stat span{font-size:11px;color:var(--muted)}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin:24px 4px 10px}.section-head h2{margin:2px 0 0;font-size:22px}
+.training-list{display:grid;gap:10px}.training{width:100%;padding:16px;border:1px solid var(--line);display:grid;grid-template-columns:44px 1fr 20px;align-items:center;text-align:left}
+.training .num{font-weight:900;color:var(--blue)}.training b{display:block}.training span{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.scene-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.scene-btn{border:1px solid var(--line);padding:16px;text-align:left}.scene-btn b{display:block}.scene-btn span{font-size:12px;color:var(--muted)}
+.survival{margin-top:14px;padding:18px;width:100%;display:flex;justify-content:space-between;text-align:left}.survival span{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+.back-btn{border:0;background:transparent;font-weight:800;color:var(--navy);padding:8px 0}.practice-head{margin:6px 2px 16px}.practice-head h2{margin:4px 0 12px}
+.progress-track{height:7px;background:#e7edf5;border-radius:999px;overflow:hidden}.progress-track div{height:100%;background:var(--blue);width:0;transition:.25s}
+.practice-card{padding:22px}.prompt-ja{margin-top:20px;color:var(--muted);font-size:16px}.english-text{font-size:28px;line-height:1.35;font-weight:800;margin:18px 0}
+.hidden{display:none!important}.play-btn,.primary-btn,.mic-btn,.ghost-btn{border-radius:14px;padding:14px 16px;font-weight:800}
+.play-btn,.primary-btn,.mic-btn{width:100%;border:0;background:var(--navy);color:#fff}.play-btn{margin:16px 0 8px}.mic-btn{background:var(--blue)}
+.ghost-btn{border:1px solid var(--line);background:#fff;color:var(--navy)}
+.speed-row{display:flex;gap:8px;margin-bottom:16px}.speed-row button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px}.speed-row button.active{background:var(--navy);color:#fff}
+.choices{display:grid;gap:10px;margin-top:14px}.choice{border:1px solid var(--line);background:#fff;border-radius:14px;padding:14px;text-align:left}.choice.correct{border-color:var(--ok);background:#ecfbf5}.choice.wrong{border-color:#d93025;background:#fff0ee}
+.speak-area{display:grid;gap:10px;margin-top:14px}.transcript{min-height:60px;padding:12px;background:#f7f9fc;border-radius:12px;color:var(--muted)}
+.feedback{min-height:24px;margin:14px 0;font-weight:700}.primary-btn{margin-top:8px}
+#levelCards{display:grid;gap:12px}.level-card{padding:18px;border:2px solid transparent}.level-card.selected{border-color:var(--blue)}.level-card h3{margin:4px 0}.level-card p{margin:6px 0 0;color:var(--muted);font-size:13px}
+dialog{border:0;border-radius:20px;padding:0;width:min(92vw,420px)}dialog::backdrop{background:rgba(0,0,0,.35)}
+.dialog-box{padding:22px}.dialog-box input{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;font-size:16px}.dialog-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+@media (max-width:360px){.countdown{font-size:36px}.english-text{font-size:24px}}
