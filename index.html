@@ -23,6 +23,7 @@
     </header>
 
     <main>
+      <!-- ===== HOME ===== -->
       <section id="homeView" class="view active">
         <div class="hero card">
           <div class="hero-copy">
@@ -33,10 +34,24 @@
           <button id="setDateBtn" class="ghost-btn">出発日</button>
         </div>
 
+        <div class="plan card">
+          <div class="eyebrow" id="planStep">PLAN</div>
+          <b id="planTitle">出発日を設定しよう</b>
+          <p id="planText" class="muted"></p>
+          <button id="planStartBtn" class="primary-btn hidden">おすすめ練習をはじめる</button>
+          <button id="planLevelBtn" class="ghost-btn hidden"></button>
+        </div>
+
         <div class="stats-grid">
-          <div class="stat card"><b id="streak">0</b><span>連続日数</span></div>
+          <div class="stat card"><b id="streak">0</b><span>🔥 連続日数</span></div>
           <div class="stat card"><b id="doneCount">0</b><span>完了レッスン</span></div>
-          <div class="stat card"><b id="learnedCount">0</b><span>練習フレーズ</span></div>
+          <div class="stat card"><b id="masteredCount">0</b><span>マスター</span></div>
+        </div>
+        <div class="mastery card">
+          <div class="mastery-row"><span id="todayText">今日 0 / 2 回クリア</span></div>
+          <div class="progress-track"><div id="todayBar"></div></div>
+          <div class="mastery-row"><span id="masteryText" class="muted"></span></div>
+          <div class="progress-track thin"><div id="masteryBar" class="ok-bar"></div></div>
         </div>
 
         <div class="section-head">
@@ -46,13 +61,22 @@
 
         <div class="training-list">
           <button class="training card" data-mode="listen">
-            <div class="num">01</div><div><b>LISTEN</b><span>英語を聞き取る 3分</span></div><div>›</div>
+            <div class="num">01</div><div><b>LISTEN</b><span>英語を聞いて意味を選ぶ</span></div><div>›</div>
           </button>
           <button class="training card" data-mode="shadow">
-            <div class="num">02</div><div><b>SHADOWING</b><span>聞いてすぐマネする 4分</span></div><div>›</div>
+            <div class="num">02</div><div><b>SHADOWING</b><span>聞いてすぐマネする</span></div><div>›</div>
           </button>
           <button class="training card" data-mode="speak">
-            <div class="num">03</div><div><b>SPEAK</b><span>自分の声で答える 3分</span></div><div>›</div>
+            <div class="num">03</div><div><b>SPEAK</b><span>日本語を見て英語で言う</span></div><div>›</div>
+          </button>
+          <button class="training card" data-mode="qa">
+            <div class="num">04</div><div><b>Q&amp;A</b><span>ホストや友達に聞かれて答える</span></div><div>›</div>
+          </button>
+          <button class="training card" data-mode="review">
+            <div class="num">05</div><div><b>苦手復習</b><span id="reviewSub">間違えたフレーズがここにたまります</span></div><div>›</div>
+          </button>
+          <button class="training card intro" data-mode="intro">
+            <div class="num">★</div><div><b>自己紹介</b><span id="introSub">まず名前と好きなことを設定しよう</span></div><div>›</div>
           </button>
         </div>
 
@@ -60,11 +84,17 @@
         <div id="sceneGrid" class="scene-grid"></div>
 
         <button id="survivalBtn" class="survival card">
-          <div><div class="eyebrow">EMERGENCY</div><b>困った時の4フレーズ</b><span>これだけは口から出るようにする</span></div>
+          <div><div class="eyebrow">EMERGENCY</div><b>困った時のフレーズ</b><span>これだけは口から出るようにする</span></div>
+          <div>›</div>
+        </button>
+
+        <button id="bookBtn" class="survival card">
+          <div><div class="eyebrow">PHRASE BOOK</div><b>フレーズ帳</b><span>全フレーズを一覧で聞ける・現地でも使える</span></div>
           <div>›</div>
         </button>
       </section>
 
+      <!-- ===== PRACTICE ===== -->
       <section id="practiceView" class="view">
         <button id="backBtn" class="back-btn">‹ HOME</button>
         <div class="practice-head">
@@ -74,14 +104,16 @@
           <div class="muted"><span id="questionIndex">1</span> / <span id="questionTotal">5</span></div>
         </div>
 
-        <div class="practice-card card">
-          <div id="sceneLabel" class="badge">Airport</div>
+        <div id="practiceCard" class="practice-card card">
+          <div class="label-row"><span id="sceneLabel" class="badge">Airport</span><span id="kindLabel" class="kind"></span></div>
           <div id="promptJa" class="prompt-ja">音声を聞いてみよう</div>
           <div id="englishText" class="english-text hidden"></div>
+          <div id="subText" class="sub-text hidden"></div>
+          <button id="hintBtn" class="link-btn hidden">ヒント（日本語の意味）</button>
 
           <button id="playBtn" class="play-btn">▶ 英語を聞く</button>
           <div id="speedRow" class="speed-row">
-            <button data-speed="0.75">0.75×</button>
+            <button data-speed="0.75">🐢 0.75×</button>
             <button class="active" data-speed="1">1.0×</button>
           </div>
 
@@ -97,12 +129,47 @@
           <button id="revealBtn" class="ghost-btn hidden">答えを見る</button>
           <button id="nextBtn" class="primary-btn hidden">次へ</button>
         </div>
+
+        <div id="resultCard" class="practice-card card result hidden">
+          <div class="eyebrow">RESULT</div>
+          <div id="resultScore" class="result-score">0 / 5</div>
+          <p id="resultMsg"></p>
+          <p id="resultStreak" class="muted"></p>
+          <button id="againBtn" class="primary-btn">もう一回</button>
+          <button id="resultHomeBtn" class="ghost-btn">HOMEへ</button>
+        </div>
       </section>
 
+      <!-- ===== PHRASE BOOK ===== -->
+      <section id="bookView" class="view">
+        <button id="bookBackBtn" class="back-btn">‹ HOME</button>
+        <div class="section-head"><div><div class="eyebrow">PHRASE BOOK</div><h2>フレーズ帳</h2></div></div>
+        <select id="bookFilter" class="select"></select>
+        <p class="muted legend"><span class="dot ok"></span>マスター <span class="dot weak"></span>苦手 <span class="dot seen"></span>練習中 <span class="dot"></span>未練習</p>
+        <div id="bookList"></div>
+      </section>
+
+      <!-- ===== SETTINGS ===== -->
       <section id="settingsView" class="view">
         <button id="settingsBackBtn" class="back-btn">‹ HOME</button>
         <div class="section-head"><div><div class="eyebrow">SETTINGS</div><h2>レベル設定</h2></div></div>
         <div id="levelCards"></div>
+
+        <div class="section-head"><div><div class="eyebrow">PROFILE</div><h2>自己紹介の設定</h2></div></div>
+        <div id="profileCard" class="card form-card">
+          <label>名前（ローマ字）<input id="nameInput" type="text" placeholder="例: Kenta" autocomplete="off" autocapitalize="words"></label>
+          <label>年齢
+            <select id="ageInput" class="select">
+              <option value="12">12</option><option value="13">13</option><option value="14">14</option>
+            </select>
+          </label>
+          <label>好きなこと<select id="hobbyInput" class="select"></select></label>
+          <button id="saveProfileBtn" class="primary-btn">保存</button>
+          <div id="profileMsg" class="muted"></div>
+        </div>
+
+        <div class="section-head"><div><div class="eyebrow">DATA</div><h2>記録</h2></div></div>
+        <button id="resetBtn" class="ghost-btn danger">学習記録をリセット</button>
       </section>
     </main>
   </div>
@@ -118,6 +185,7 @@
     </form>
   </dialog>
 
+  <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
