@@ -19,7 +19,7 @@ let state = {
   lastDate:localStorage.getItem("ny_last_date")||"",
   departure:localStorage.getItem("ny_departure")||"",
   profile:loadJSON("ny_profile", {name:"", age:"13", hobby:"soccer"}),
-  stats:loadJSON("ny_stats", {}),      // { itemId: {ok, ng, last} }
+  stats:loadJSON("ny_stats_v2", {}),   // { itemId: {ok, ng, last} }（v2: 問題データ改訂で記録を作り直し）
   today:loadJSON("ny_today", {date:"", n:0}),
   speed:1
 };
@@ -34,7 +34,7 @@ function save(){
   localStorage.setItem("ny_last_date",state.lastDate);
   localStorage.setItem("ny_departure",state.departure);
   localStorage.setItem("ny_profile",JSON.stringify(state.profile));
-  localStorage.setItem("ny_stats",JSON.stringify(state.stats));
+  localStorage.setItem("ny_stats_v2",JSON.stringify(state.stats));
   localStorage.setItem("ny_today",JSON.stringify(state.today));
 }
 
@@ -60,7 +60,10 @@ function currentStreak(){
 // ---------- テキスト ----------
 function fill(s){
   const p=state.profile;
-  return s.replaceAll("{name}", p.name.trim()||"Taro").replaceAll("{hobby}", p.hobby||"soccer");
+  return s.replaceAll("{name}", p.name.trim()||"Taro")
+    .replaceAll("{hobbyJa}", hobbyJa(p.hobby||"soccer"))
+    .replaceAll("{hobby}", p.hobby||"soccer")
+    .replaceAll("{age}", numberWord(p.age));
 }
 function phrase(item){
   if(item.text) return fill(item.text);           // 自己紹介
@@ -315,18 +318,18 @@ function renderQuestion(){
     // 日本語を先に見せると答えが分かってしまうので、場面だけ見せる
     $("#promptJa").textContent=`${SCENE_INFO[item.scene].ja}の場面。英語を聞いて、意味を選ぼう`;
     $("#englishText").textContent=phrase(item);
-    item.choices.forEach((c,i)=>addChoice(c, ()=>checkChoice(i,item)));
+    addChoices(item.choices.map(fill), item.correct, ok=>checkChoice(ok,item));
     $("#choices").classList.remove("hidden");
     $("#playBtn").textContent="▶ 英語を聞く";
     speakText(phrase(item));
   } else if(kind==="shadow"){
-    $("#promptJa").textContent=item.ja;
+    $("#promptJa").textContent=fill(item.ja);
     $("#englishText").textContent=phrase(item); $("#englishText").classList.remove("hidden");
     $("#playBtn").textContent="▶ 英語を聞く";
     setupSpeech(item, phrase(item));
     speakText(phrase(item));
   } else if(kind==="speak"){
-    $("#promptJa").textContent=`「${item.ja}」を英語で言ってみよう`;
+    $("#promptJa").textContent=`「${fill(item.ja)}」を英語で言ってみよう`;
     $("#englishText").textContent=phrase(item);
     $("#playBtn").textContent="▶ お手本を聞く";
     $("#revealBtn").classList.remove("hidden");
@@ -336,33 +339,36 @@ function renderQuestion(){
     $("#englishText").textContent=fill(item.q);
     $("#subText").textContent=item.qja;
     if(state.level<3) $("#hintBtn").classList.remove("hidden");
-    item.answers.forEach((a,i)=>addChoice(fill(a), ()=>checkQA(i,item)));
+    addChoices(item.answers.map(fill), item.correct, ok=>checkQA(ok,item));
     $("#choices").classList.remove("hidden");
     $("#playBtn").textContent="▶ 質問を聞く";
     speakText(fill(item.q));
   }
 }
-function addChoice(text, onClick){
-  const b=document.createElement("button"); b.className="choice"; b.textContent=text; b.onclick=onClick;
-  $("#choices").appendChild(b);
+// 選択肢は毎回シャッフル（正解の位置で当てられないように）
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function addChoices(texts, correct, onAnswer){
+  shuffle(texts.map((t,i)=>({t,i}))).forEach(({t,i})=>{
+    const b=document.createElement("button"); b.className="choice"; b.textContent=t;
+    if(i===correct) b.dataset.correct="1";
+    b.onclick=()=>{
+      $$(".choice").forEach(x=>x.disabled=true);
+      $("#choices [data-correct]").classList.add("correct");
+      if(i!==correct) b.classList.add("wrong");
+      onAnswer(i===correct);
+    };
+    $("#choices").appendChild(b);
+  });
 }
-function markChoices(i, correct){
-  const bs=$$(".choice"); bs.forEach(x=>x.disabled=true);
-  bs[correct].classList.add("correct");
-  if(i!==correct) bs[i].classList.add("wrong");
-  return i===correct;
-}
-function checkChoice(i,item){
-  const ok=markChoices(i,item.correct);
+function checkChoice(ok,item){
   $("#feedback").textContent= ok ? "Good! 声に出してマネしてみよう。" : "大丈夫。もう一度聞いて、声に出してマネしよう。";
   $("#englishText").classList.remove("hidden");
-  $("#subText").textContent=item.ja; $("#subText").classList.remove("hidden");
+  $("#subText").textContent=fill(item.ja); $("#subText").classList.remove("hidden");
   record(item, ok); if(ok) sessionOk++; answered=true;
   speakText(phrase(item));
   $("#nextBtn").classList.remove("hidden");
 }
-function checkQA(i,item){
-  const ok=markChoices(i,item.correct);
+function checkQA(ok,item){
   const ans=fill(item.answers[item.correct]);
   $("#englishText").classList.remove("hidden");
   $("#subText").textContent=item.qja; $("#subText").classList.remove("hidden");
@@ -408,7 +414,7 @@ function renderBook(){
       const txt=document.createElement("div");
       const en=document.createElement("b"); en.textContent= item.q ? fill(item.q) : phrase(item);
       const ja=document.createElement("span");
-      ja.textContent= item.q ? `${item.qja} → ${fill(item.answers[item.correct])}` : item.ja;
+      ja.textContent= item.q ? `${item.qja} → ${fill(item.answers[item.correct])}` : fill(item.ja);
       txt.append(en, ja);
       const play=document.createElement("button"); play.className="mini-play"; play.textContent="▶";
       play.onclick=()=>speakText(item.q ? `${fill(item.q)} ... ${fill(item.answers[item.correct])}` : phrase(item));

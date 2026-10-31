@@ -14,7 +14,7 @@ NY English Sprint - iPhone PWA版
     05 苦手復習    間違えたフレーズだけを集中練習
     ★ 自己紹介    名前・年齢・好きなことから自分だけの自己紹介を作って練習
 - 9つの場面：Airport / Homestay / School / Small Talk / Subway / Sightseeing / Shopping / Restaurant / Emergency
-- フレーズ61個 ＋ Q&A 22問（フレーズごとに3レベル分の英文）
+- フレーズ61個 ＋ Q&A 23問（フレーズごとに3レベル分の英文）
 - 間違えたフレーズほど多く出題（簡易な間隔反復）
 - マスター数・連続日数・今日の目標（1日2回）を表示
 - フレーズ帳：全フレーズを一覧で聞ける（現地でのカンペにも）

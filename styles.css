@@ -58,3 +58,4 @@ dialog{border:0;border-radius:20px;padding:0;width:min(92vw,420px)}dialog::backd
 .book-row{display:grid;grid-template-columns:14px 1fr 40px;gap:10px;align-items:center;padding:12px 14px;margin-bottom:8px;border-radius:14px}
 .book-row b{display:block;font-size:15px}.book-row span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
 .mini-play{width:40px;height:40px;border-radius:50%;border:0;background:var(--navy);color:#fff}
+.choice:disabled{color:var(--ink);opacity:1}.choice:disabled:not(.correct):not(.wrong){opacity:.55}
